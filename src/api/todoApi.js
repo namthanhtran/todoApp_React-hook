@@ -22,3 +22,5 @@ const todoApi = {
     return axiosClient.delete(url);
   }
 }
+
+export default todoApi;

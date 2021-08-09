@@ -3,15 +3,16 @@ import Loading from './component/Loading/Loading';
 import TodoFeature from './todo';
 
 function App() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    const loadingTimeOut = setTimeout(() => {
-      setLoading(false);
+    setLoading(true);
+    const loadingTimeout = setTimeout(() => {
+        setLoading(false);
     }, 2000);
 
-    return clearTimeout(loadingTimeOut)
-  }, []);
+    return () => clearTimeout(loadingTimeout);
+  }, [])
 
   return (
     <React.Fragment>
