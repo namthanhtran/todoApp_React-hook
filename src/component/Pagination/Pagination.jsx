@@ -1,5 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button, makeStyles } from '@material-ui/core';
+import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
+import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+
+const useStyle = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  }
+}))
 
 Pagination.propTypes = {
   pagination: PropTypes.bool.isRequired,
@@ -8,6 +20,7 @@ Pagination.propTypes = {
 };
 
 function Pagination(props) {
+  const classes = useStyle();
   const {pagination = null, onPageChange, loading} = props;
   const {_page, _limit, _totalRows} = pagination;
   const totalPages = Math.ceil(_totalRows / _limit);
@@ -20,13 +33,15 @@ function Pagination(props) {
 
 
   return (
-    <div>
-      <button disabled={_page <= 1} onClick={() => handlePageChange(_page - 1)}>
-        Prev
-      </button>
-      <button disabled={_page > totalPages} onClick={() => handlePageChange(_page + 1)}>
-        Next
-      </button>
+    <div className={classes.root}>
+      <Button disabled={_page <= 1} 
+              onClick={() => handlePageChange(_page - 1)}>
+        <ArrowLeftIcon />
+      </Button>
+      <Button disabled={_page >= totalPages} 
+              onClick={() => handlePageChange(_page + 1)}>
+        <ArrowRightIcon />
+      </Button>
     </div>
   );
 }

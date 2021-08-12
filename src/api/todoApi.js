@@ -15,7 +15,7 @@ const todoApi = {
   },
   update(data){
     const url = `/work/${data.id}`;
-    return axiosClient.post(url, data);
+    return axiosClient.patch(url, data);
   },
   remove(id){
     const url = `/work/${id}`;

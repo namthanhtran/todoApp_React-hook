@@ -1,7 +1,7 @@
-import React from 'react';
+import { makeStyles, TextField } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import { makeStyles,TextField } from '@material-ui/core';
-import { Controller, useForm,  } from 'react-hook-form';
+import React from 'react';
+import { Controller } from 'react-hook-form';
 
 const useStyle = makeStyles( (theme) => ({
   textField: {
@@ -16,13 +16,14 @@ const useStyle = makeStyles( (theme) => ({
 InputField.propTypes = {
   form: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
 
   label: PropTypes.string,
   disable: PropTypes.bool,
 };
 
 function InputField(props) {
-  const {form, name, label, disable} = props;
+  const {form, name, value, label, disable} = props;
   const classes = useStyle();
   const {control} = form;
 
@@ -31,13 +32,14 @@ function InputField(props) {
       <Controller 
         name={name}
         control={control}
+        value={value}
         render={({
           field: {onChange, onBlur, value, name},
           fieldState: {invalid, error}
         }) => (
           <TextField 
             className={classes.textField}
-            placeholder="what todo you want to add?"
+            placeholder="What todo you want to add?"
             variat="outlined"
 
             name={name}

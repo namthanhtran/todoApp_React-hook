@@ -1,10 +1,22 @@
 import { yupResolver } from '@hookform/resolvers/yup';
+import { makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from "yup";
 import InputField from '../../component/FormControls/InputField';
+
+
+
+const useStyle = makeStyles( (theme) => ({
+  root: {
+    display: 'flex',
+    textAlign: 'center',
+    justifyContent: 'center',
+    paddingBottom: theme.spacing(3)
+  }
+}))
+
 
 TodoForm.propTypes = {
   onSubmit: PropTypes.func,
@@ -12,14 +24,8 @@ TodoForm.propTypes = {
 };
 
 function TodoForm(props) {
-  const {onSubmit, initialValue, loading} = props; 
-
-  const [values, setValues] = useState(initialValue || {});
-
-  useEffect( () => {
-    setValues(initialValue || {});
-  }, [initialValue]); 
-
+  const classes = useStyle();
+  const {onSubmit, initialValue} = props; 
   const schema = yup.object().shape({
     title: yup.string().required('Please enter title'),
   })
@@ -27,20 +33,23 @@ function TodoForm(props) {
   const form = useForm({
     defaultValues: {
       title: '',
-      status: 'new'
+      status: 'new',
     },
     resolver: yupResolver(schema),
   })
+  
   const handleFormSubmit = (values) => {
     if(onSubmit){
-      onSubmit(values);
+      onSubmit(values)
     }
+
     form.reset();
   }
 
+
   return (
-    <form onSubmit={form.handleSubmit(handleFormSubmit)}>
-      <InputField form={form} name="title" disable={loading}/>
+    <form onSubmit={form.handleSubmit(handleFormSubmit)} className={classes.root}>
+      <InputField form={form} name="title" />
     </form>
   );
 }
