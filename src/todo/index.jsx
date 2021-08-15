@@ -65,21 +65,23 @@ function TodoFeature(props) {
   }, [filters]);
 
   
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
   };
 
   const handleSubmitEdit = async(formValues) =>{
-    console.log('Form edit submit', formValues);
     try {
       setLoading(true);
 
       await todoApi.update(formValues);
-      const {data} = todoApi.getAll();
-
+      const {data} = todoApi.getAll(filters);
       setTodoList(data);
+      setFilters({
+        ...filters,
+        _page: (pagination._totalRows / pagination._limit)
+      })
     } catch (error) {
       console.log('Failed to update data', error);
     }
@@ -91,7 +93,6 @@ function TodoFeature(props) {
   const handleEdit = (todo) => { //handle Open Dialog
     setOpen(true);
     setSelected(todo);
-    console.log(todo);
   }
 
 
@@ -116,7 +117,7 @@ function TodoFeature(props) {
   }
 
   const handlePageChange = (newPage) => {
-    console.log(newPage);
+ 
     setFilters({
       ...filters,
       _page: newPage,
@@ -124,7 +125,7 @@ function TodoFeature(props) {
   }
 
   const handleFormSubmit = async(formValues) => {
-    console.log(formValues);
+   
     try {
       setLoading(true);
       await todoApi.add(formValues);
@@ -155,14 +156,17 @@ function TodoFeature(props) {
       <Paper>
         <Pagination pagination={pagination} onPageChange={handlePageChange}/>
       </Paper>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Change Todo</DialogTitle>
+      <Dialog open={open} 
+              onClose={handleClose} 
+              aria-labelledby="form-dialog-title"
+              >
+        <DialogTitle id="form-dialog-title">Update Todo</DialogTitle>
         <DialogContent>
           <EditField initialValue={selected} onSubmit={handleSubmitEdit}/>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
-            Close
+            Cancel
           </Button>
         </DialogActions>
       </Dialog>
