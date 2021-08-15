@@ -20,10 +20,14 @@ const useStyle = makeStyles( theme => ({
     right: 0,
     bottom: 0,
     marginTop: theme.spacing(1),
-    padding: theme.spacing(5),
+    padding: theme.spacing(2),
     marginLeft: 'auto',
-    marginRight: 'auto'
+    marginRight: 'auto',
   },
+  paper:{
+    border: '1px groove #FF3DA4',
+    margin: theme.spacing(1)
+  }
 }))
 
 TodoFeature.propTypes = {
@@ -39,6 +43,7 @@ function TodoFeature(props) {
   const classes = useStyle();
   const [todoList, setTodoList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(INIT_TODO);
   const [pagination, setPagination] = useState({
     _page: 1,
@@ -65,7 +70,6 @@ function TodoFeature(props) {
   }, [filters]);
 
   
-  const [open, setOpen] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
@@ -144,34 +148,35 @@ function TodoFeature(props) {
   }
 
   return (
-    <Box className={classes.root}>
-      <Paper>
-        <TodoForm onSubmit={handleFormSubmit} />
-      </Paper>
-      <Paper>
-        <TodoList todo={todoList} 
-                  onEdit={handleEdit} 
-                  onDelete={handleDelete}/>
-      </Paper>
-      <Paper>
-        <Pagination pagination={pagination} onPageChange={handlePageChange}/>
-      </Paper>
-      <Dialog open={open} 
-              onClose={handleClose} 
-              aria-labelledby="form-dialog-title"
-              >
-        <DialogTitle id="form-dialog-title">Update Todo</DialogTitle>
-        <DialogContent>
-          <EditField initialValue={selected} onSubmit={handleSubmitEdit}/>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-    </Box>
+    <>
+      <Box className={classes.root}>
+        <Paper className={classes.paper}>
+          <TodoForm onSubmit={handleFormSubmit} />
+        </Paper>
+        <Paper className={classes.paper}>
+          <TodoList todo={todoList} 
+                    onEdit={handleEdit} 
+                    onDelete={handleDelete}/>
+        </Paper>
+        <Paper className={classes.paper}>
+          <Pagination pagination={pagination} onPageChange={handlePageChange}/>
+        </Paper>
+        <Dialog open={open} 
+                onClose={handleClose} 
+                aria-labelledby="form-dialog-title"
+                >
+          <DialogTitle id="form-dialog-title">Update Todo</DialogTitle>
+          <DialogContent>
+            <EditField initialValue={selected} onSubmit={handleSubmitEdit}/>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    </>
   );
 }
 

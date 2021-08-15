@@ -15,21 +15,23 @@ const useStyle = makeStyles( (theme) => ({
   li: {
     width: '100%',
     display: 'flex',
-    listStyleType: 'none'
+    listStyleType: 'none',
   },
   title: {
     width: '30%',
     padding: theme.spacing(2),
     display: 'flex',
     textAlign: 'center',
-    justifyContent: 'left'
+    justifyContent: 'left',
+    fontWeight: 'bold'
   },
   status: {
     width: '30%',
     padding: theme.spacing(2),
     display: 'flex',
     textAlign: 'center',
-    justifyContent: 'left'
+    justifyContent: 'left',
+    fontStyle: 'italic'
   }
 }))
 
@@ -50,17 +52,20 @@ function TodoList(props) {
       { !loading && 
         <ul className={classes.root}>
           {todo.map((item) => (
-            <li key={item.id} style={{display: 'flex'}}>
+            <React.Fragment>
+              <li key={item.id} className={classes.li}>
               
-            <Typography className={classes.title}>{item.title}</Typography>
-            <Typography className={classes.status}>{item.status}</Typography>
-            <Button onClick={ () => onEdit(item)}>
-              <EditIcon />
-            </Button>
-            <Button onClick={ () => onDelete(item)}>
-              <DeleteIcon />
-            </Button>
-          </li>
+              <Typography className={classes.title}>{item.title}</Typography>
+              <Typography className={classes.status}>{item.status}</Typography>
+              <Button onClick={ () => onEdit(item)}>
+                <EditIcon />
+              </Button>
+              <Button onClick={ () => onDelete(item)}>
+                <DeleteIcon />
+              </Button>
+            </li>
+            <hr/>
+            </React.Fragment>
           ))}
         </ul>
       }
